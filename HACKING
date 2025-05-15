@@ -1,0 +1,16 @@
+CODING
+------
+
+No need to code anything, just point the authors to any missing fiducial.
+
+
+RELEASING
+---------
+
+To update the pypi hub, you need an account on pypi, and then run the following commands:
+
+	# update version number on file setup.py
+	# update version number on file fiducials.py
+	python -m build
+	python -m twine upload dist/fiducials-X-py3-none-any.whl
+	rm -rf dist fiducials.egg-info

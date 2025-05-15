@@ -1,0 +1,35 @@
+FIDUCIALS
+=========
+
+A unified sh and python interface for many fiducial marker detectors.
+
+shell usage
+-----------
+
+fiducials cvqr img.png
+echo $?
+fiducials ghost img.png
+echo $?
+
+
+python usage
+------------
+
+! pip install fiducials
+
+# via the universal accessor F
+from fiducials import F
+b1 = G("cvqr", x)
+b2 = G("ghost", x)
+
+# via individual functions
+from fiducials import fiducial_cvqr  # etc
+
+
+list of all fiducials
+---------------------
+
+ID        | implementation
+----------+---------------------------------------------------------------
+ghost     | ismail bencheikh autocorrelating devices
+cvqr      | opencv's qr code detector
