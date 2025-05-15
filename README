@@ -19,8 +19,8 @@ python usage
 
 # via the universal accessor F
 from fiducials import F
-b1 = G("cvqr", x)
-b2 = G("ghost", x)
+b1 = F("cvqr", x)
+b2 = F("ghost", x)
 
 # via individual functions
 from fiducials import fiducial_cvqr  # etc
@@ -33,3 +33,4 @@ ID        | implementation
 ----------+---------------------------------------------------------------
 ghost     | ismail bencheikh autocorrelating devices
 cvqr      | opencv's qr code detector
+pyzbar    | zbar's library detector
