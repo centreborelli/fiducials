@@ -1,12 +1,14 @@
 
 
 
-def fiducial_cvqr(x, s):
+def fiducial_cvqr(x):
 	# pip install opencv-python
 	import cv2
-	return not not cv2.QrCodeDetector().detectAndDecode(x)[0]
+	from numpy import uint8
+	X = x.astype(uint8)
+	return not not cv2.QRCodeDetector().detectAndDecode(X)[0]
 
-def fiducial_pyzbar(x, s):
+def fiducial_pyzbar(x):
 	# apt-get install libzbar0
 	# pip install pyzbar
 	import pyzbar.pyzbar
@@ -53,7 +55,7 @@ if __name__ == "__main__":
 	i = pick_option("-i", "-")
 	f = globals()[f"fiducial_{v[1]}"]
 	x = iio.read(i)
-	b = f(x, s)
+	b = f(x)
 	from sys import exit
 	exit(not b)
 
