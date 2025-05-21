@@ -1,4 +1,7 @@
 
+def eprint(*args, **kwargs):
+	import sys
+	print(*args, file=sys.stderr, **kwargs)
 
 
 def fiducial_cvqr(x):
@@ -6,13 +9,20 @@ def fiducial_cvqr(x):
 	import cv2
 	from numpy import uint8
 	X = x.astype(uint8)
-	return not not cv2.QRCodeDetector().detectAndDecode(X)[0]
+	#import iio
+	#iio.write("/tmp/cvqr_x.npy", x)
+	#iio.write("/tmp/cvqr_X.npy", X)
+	r = cv2.QRCodeDetector().detectAndDecode(X)[0]
+	eprint(f"x.shape={x.shape}, r={r}")
+	return not not r
 
 def fiducial_pyzbar(x):
 	# apt-get install libzbar0
 	# pip install pyzbar
 	import pyzbar.pyzbar
-	return not not pyzbar.pyzbar.decode(x)
+	r = pyzbar.pyzbar.decode(x)
+	eprint(f"x.shape={x.shape}, r={r}")
+	return not not r
 
 
 # visible API
@@ -54,7 +64,7 @@ if __name__ == "__main__":
 	import iio
 	i = pick_option("-i", "-")
 	f = globals()[f"fiducial_{v[1]}"]
-	x = iio.read(i)
+	x = iio.read(i).clip(0,255)
 	b = f(x)
 	from sys import exit
 	exit(not b)
