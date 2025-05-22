@@ -3,7 +3,7 @@ import setuptools
 
 setuptools.setup(
 	name = "fiducials",
-	version = "0",
+	version = "1",
 	description = "unified interface to many fiducial marker detectors",
 	classifiers = [
 		"Operating System :: OS Independent",

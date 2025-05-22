@@ -4,18 +4,27 @@ def eprint(*args, **kwargs):
 	print(*args, file=sys.stderr, **kwargs)
 
 
+def gray8bit(f):
+	def g(x, *a, **k):
+		y = x if len(x.shape) == 2 else x[:,:,0]
+		from numpy import uint8
+		return f(y.clip(0,255).astype(uint8), *a, **k)
+	return g
+
+@gray8bit
 def fiducial_cvqr(x):
 	# pip install opencv-python
 	import cv2
 	from numpy import uint8
-	X = x.astype(uint8)
+	#X = x.astype(uint8)
 	#import iio
 	#iio.write("/tmp/cvqr_x.npy", x)
 	#iio.write("/tmp/cvqr_X.npy", X)
-	r = cv2.QRCodeDetector().detectAndDecode(X)[0]
+	r = cv2.QRCodeDetector().detectAndDecode(x)[0]
 	eprint(f"x.shape={x.shape}, r={r}")
 	return not not r
 
+@gray8bit
 def fiducial_pyzbar(x):
 	# apt-get install libzbar0
 	# pip install pyzbar
@@ -45,7 +54,7 @@ def printinstall():
 
 
 # unified interface for all the algorithms above
-def G(m, x):
+def F(m, x):
 	""" check whether image x has a fiducial marking according to m """
 	f = globals()[f"fiducial_{m}"]
 	return f(x, σ)
@@ -64,9 +73,9 @@ if __name__ == "__main__":
 	import iio
 	i = pick_option("-i", "-")
 	f = globals()[f"fiducial_{v[1]}"]
-	x = iio.read(i).clip(0,255)
+	x = iio.read(i)
 	b = f(x)
 	from sys import exit
 	exit(not b)
 
-version = 9
+version = 1
